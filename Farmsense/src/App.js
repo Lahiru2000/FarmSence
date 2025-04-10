@@ -34,15 +34,17 @@ function App() {
             <Route path="/" element={<FirstHome/>} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
-              <Route path="/ImgAI" element={<ImageAnalysis />} />
-              <Route path="/TxtAi" element={<TxtAnalysis />} />
               
-          <Route path="/products" element={<ProductList />} />
-          <Route path="/product/:id" element={<ProductDetail />} />
-          <Route path="/product/create" element={<CreateProduct />} />
-          <Route path="/product/edit/:id" element={<EditProduct />} />
-          <Route path="/product/delete/:id" element={<DeleteProduct />} />
-          <Route path="/user/:userId/products" element={<UserProducts />} />
+              
+              {/* authenticated routes */}
+              <Route path="/ImgAI" element={<PrivateRoute><ImageAnalysis /></PrivateRoute>} />
+              <Route path="/TxtAi" element={<PrivateRoute><TxtAnalysis /></PrivateRoute>} />
+              <Route path="/products" element={<PrivateRoute><ProductList /></PrivateRoute>} />
+              <Route path="/product/:id" element={<PrivateRoute><ProductDetail /></PrivateRoute>} />
+              <Route path="/product/create" element={<PrivateRoute><CreateProduct /></PrivateRoute>} />       
+              <Route path="/product/edit/:id" element={<PrivateRoute><EditProduct /></PrivateRoute>} />
+              <Route path="/product/delete/:id" element={<PrivateRoute><DeleteProduct /></PrivateRoute>} />
+              <Route path="/user/:userId/products" element={<PrivateRoute><UserProducts /></PrivateRoute>} />
           
            
               
