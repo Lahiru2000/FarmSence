@@ -15,10 +15,11 @@ import ProductList from './Component/ProductList';
 import CreateProduct from './Component/CreateProduct';
 import EditProduct from './Component/EditProduct';
 import UserProducts from './Component/UserProducts';
-import ProductDetail from './Component/ProductDashboard';
+// import ProductDetail from './Component/ProductDashboard';
 import DeleteProduct from './Component/DeleteProduct';
 import FirstHome from './Component/FirstHome';
 import Footer from './Component/Footer';
+import ProductDetails from './Component/ProductDetails';
  
 
 
@@ -40,7 +41,7 @@ function App() {
               <Route path="/ImgAI" element={<PrivateRoute><ImageAnalysis /></PrivateRoute>} />
               <Route path="/TxtAi" element={<PrivateRoute><TxtAnalysis /></PrivateRoute>} />
               <Route path="/products" element={<PrivateRoute><ProductList /></PrivateRoute>} />
-              <Route path="/product/:id" element={<PrivateRoute><ProductDetail /></PrivateRoute>} />
+              <Route path="/product/:id" element={<PrivateRoute><ProductDetails /></PrivateRoute>} />
               <Route path="/product/create" element={<PrivateRoute><CreateProduct /></PrivateRoute>} />       
               <Route path="/product/edit/:id" element={<PrivateRoute><EditProduct /></PrivateRoute>} />
               <Route path="/product/delete/:id" element={<PrivateRoute><DeleteProduct /></PrivateRoute>} />

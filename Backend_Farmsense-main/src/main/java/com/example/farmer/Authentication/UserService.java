@@ -42,4 +42,12 @@ public class UserService implements UserDetailsService {
                 .build();
 
     }
+
+
+
+    public User getUserByUsername(String username) {
+        // Implementation depends on your repository setup
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + username));
+    }
 }

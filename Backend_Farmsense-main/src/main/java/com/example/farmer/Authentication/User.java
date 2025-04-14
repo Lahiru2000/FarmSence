@@ -1,7 +1,10 @@
 package com.example.farmer.Authentication;
 
+import com.example.farmer.model.Feedback;
 import com.example.farmer.model.Product;
 import jakarta.persistence.*;
+
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -21,6 +24,10 @@ public class User {
     // One-to-many relationship with Product
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Product> products;
+
+    // Add this field to your User class
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<Feedback> feedbacks = new HashSet<>();
 
     // Getters and Setters
     public Long getId() { return id; }

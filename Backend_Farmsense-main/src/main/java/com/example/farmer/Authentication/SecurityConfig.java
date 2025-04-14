@@ -50,12 +50,13 @@ public class SecurityConfig {
                         .requestMatchers("/auth/**").permitAll()
                         .requestMatchers("/auth/products/**").permitAll()
                         .requestMatchers("/crop-solution").permitAll()
+                        .requestMatchers("/api/feedback/**").permitAll()
 
                         // Admin only endpoints
                         .requestMatchers("/admin/**").hasAuthority("ADMIN")
 
                         // API endpoints that require authentication
-                        .requestMatchers("/api/recommendations/**").authenticated()
+                        .requestMatchers("/api/recommendations/**").permitAll()
 
                         // Default rule - authenticate everything else
                         .anyRequest().authenticated()

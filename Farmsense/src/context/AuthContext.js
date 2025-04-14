@@ -12,7 +12,8 @@ export const AuthProvider = ({ children }) => {
     const token = localStorage.getItem('token');
     if (token) {
       const username = localStorage.getItem('username');
-      setCurrentUser({ username });
+      const userId = localStorage.getItem('userId');
+      setCurrentUser({ username, userId });
     }
     setLoading(false);
   }, []);
@@ -31,10 +32,13 @@ export const AuthProvider = ({ children }) => {
         throw new Error('Login failed. Please check your credentials.');
       }
       
-      const token = await response.text();
-      localStorage.setItem('token', token);
-      localStorage.setItem('username', username);
-      setCurrentUser({ username });
+      // Parse JSON response instead of text
+      const data = await response.json();
+      localStorage.setItem('token', data.token);
+      localStorage.setItem('username', data.username);
+      localStorage.setItem('userId', data.userId);
+      setCurrentUser({ username: data.username, userId: data.userId });
+       
       setError('');
       return true;
     } catch (error) {
@@ -69,6 +73,7 @@ export const AuthProvider = ({ children }) => {
   const logout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('username');
+    localStorage.removeItem('userId');
     setCurrentUser(null);
   };
 

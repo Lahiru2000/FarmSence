@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "products")
@@ -42,6 +44,10 @@ public class Product {
 
     @Column(nullable = false)
     private LocalDate expiryDate;
+
+    // Add this field to your Product class
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<Feedback> feedbacks = new HashSet<>();
 
     private String manufacturer;
 

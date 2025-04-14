@@ -9,6 +9,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @RestController
 @CrossOrigin
 @RequestMapping("/auth")
@@ -35,6 +38,22 @@ public class AuthController {
         );
         final UserDetails userDetails = userService.loadUserByUsername(user.getUsername());
         final String token = jwtUtil.generateToken(userDetails);
-        return ResponseEntity.ok(token);
+
+        // Fetch the user ID
+        User loggedInUser = userService.getUserByUsername(user.getUsername());
+
+        // Create a response containing both token and user ID
+        Map<String, Object> response = new HashMap<>();
+        response.put("token", token);
+        response.put("userId", loggedInUser.getId());
+        response.put("username", loggedInUser.getUsername());
+
+
+
+        return ResponseEntity.ok(response);
+
     }
+
+
+
 }
