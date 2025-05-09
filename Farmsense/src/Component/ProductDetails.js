@@ -21,7 +21,8 @@ const ProductDetails = () => {
   const [newFeedback, setNewFeedback] = useState({
     comment: "",
     rating: 5,
-    userId: userId || "1" // Use userId with fallback
+    userId: userId || "1", // Use userId with fallback
+    image: null // Add this line
   });
   const [submitting, setSubmitting] = useState(false);
   
@@ -92,6 +93,15 @@ const ProductDetails = () => {
     }));
   };
 
+  const handleImageChange = (e) => {
+    if (e.target.files && e.target.files[0]) {
+      setNewFeedback(prev => ({
+        ...prev,
+        image: e.target.files[0]
+      }));
+    }
+  };
+
   const handleEditFeedbackChange = (e) => {
     const { name, value } = e.target;
     setEditFeedback(prev => ({
@@ -104,26 +114,35 @@ const ProductDetails = () => {
     e.preventDefault();
     setSubmitting(true);
 
-    console.log("Submitting feedback with userId:", userId);
+    const formData = new FormData();
+    formData.append('productId', id);
+    formData.append('userId', userId);
+    formData.append('comment', newFeedback.comment);
+    formData.append('rating', newFeedback.rating);
+    if (newFeedback.image) {
+      formData.append('image', newFeedback.image);
+    }
 
-    const feedbackData = {
-      productId: id,
-      userId: userId,
-      comment: newFeedback.comment,
-      rating: newFeedback.rating
-    };
-
-    console.log("Feedback data being submitted:", feedbackData);
-
-    axios.post("http://localhost:8080/api/feedback", feedbackData)
+    axios.post("http://localhost:8080/api/feedback", formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    })
       .then(response => {
         console.log("Feedback submission successful:", response.data);
         // Reset form
         setNewFeedback({
-          ...newFeedback,
           comment: "",
-          rating: 5
+          rating: 5,
+          userId: userId || "1",
+          image: null
         });
+        
+        // Clear the file input
+        const fileInput = document.querySelector('input[type="file"]');
+        if (fileInput) {
+          fileInput.value = '';
+        }
         
         setStatusMessage({
           type: "success",
@@ -182,7 +201,13 @@ const ProductDetails = () => {
       rating: editFeedback.rating
     };
 
-    axios.put(`http://localhost:8080/api/feedback/${editFeedbackId}`, feedbackData)
+    console.log('Submitting feedback update:', feedbackData); // Add this for debugging
+
+    axios.put(`http://localhost:8080/api/feedback/${editFeedbackId}`, feedbackData, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
       .then(response => {
         console.log("Feedback update successful:", response.data);
         
@@ -191,24 +216,20 @@ const ProductDetails = () => {
           message: "Feedback updated successfully!"
         });
         
-        // Close modal and reset edit mode
         closeEditModal();
-        
-        // Refresh feedbacks and average rating
         fetchFeedbacks();
         fetchAverageRating();
         
-        // Clear success message after 3 seconds
         setTimeout(() => {
           setStatusMessage({ type: "", message: "" });
         }, 3000);
       })
       .catch(error => {
-        console.error("Error updating feedback:", error);
+        console.error("Error updating feedback:", error.response?.data || error);
         let errorMsg = "Error updating feedback. Please try again.";
         
-        if (error.response && error.response.status === 403) {
-          errorMsg = "You are not authorized to update this feedback.";
+        if (error.response?.status === 403) {
+          errorMsg = error.response?.data?.error || "You are not authorized to update this feedback.";
         }
         
         setStatusMessage({
@@ -388,6 +409,15 @@ const ProductDetails = () => {
               required
             ></textarea>
           </div>
+          <div className="mb-4">
+            <label className="block text-sm font-medium mb-1">Upload Image</label>
+            <input 
+              type="file" 
+              name="image" 
+              onChange={handleImageChange}
+              className="w-full border rounded p-2"
+            />
+          </div>
           <button 
             type="submit" 
             className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
@@ -416,6 +446,17 @@ const ProductDetails = () => {
                   </div>
                 </div>
                 <p className="text-gray-700">{feedback.comment}</p>
+                {feedback.imageUrl && (
+                  <div className="mt-2">
+                    <img 
+                      src={`http://localhost:8080${feedback.imageUrl}`} // Update image source
+                      alt="Feedback" 
+                      className="max-w-md h-auto rounded-lg shadow-md"
+                      onClick={() => window.open(`http://localhost:8080${feedback.imageUrl}`, '_blank')} // Add click to enlarge
+                      style={{ cursor: 'pointer' }}
+                    />
+                  </div>
+                )}
                 <div className="flex justify-between items-center mt-2">
                   <p className="text-sm text-gray-500">By: User #{feedback.user?.id || "Unknown"}</p>
                   

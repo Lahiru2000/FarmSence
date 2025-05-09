@@ -37,7 +37,7 @@ public class FeedbackService {
         return feedbackRepository.findById(id);
     }
 
-    public Feedback addFeedback(Long productId, Long userId, String comment, Integer rating) {
+    public Feedback addFeedback(Long productId, Long userId, String comment, Integer rating, String imageUrl) {
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new RuntimeException("Product not found"));
 
@@ -49,16 +49,20 @@ public class FeedbackService {
         feedback.setUser(user);
         feedback.setComment(comment);
         feedback.setRating(rating);
+        feedback.setImageUrl(imageUrl);
 
         return feedbackRepository.save(feedback);
     }
 
-    public Feedback updateFeedback(Long id, String comment, Integer rating) {
+    public Feedback updateFeedback(Long id, String comment, Integer rating, String imageUrl) {
         Feedback feedback = feedbackRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Feedback not found"));
 
         feedback.setComment(comment);
         feedback.setRating(rating);
+        if (imageUrl != null) {
+            feedback.setImageUrl(imageUrl);
+        }
 
         return feedbackRepository.save(feedback);
     }

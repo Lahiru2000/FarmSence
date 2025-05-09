@@ -28,6 +28,9 @@ public class Feedback {
     @Column(nullable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
 
+    @Column
+    private String imageUrl;  // New field for storing image URL
+
     // Many-to-one relationship with Product
     @ManyToOne
     @JoinColumn(name = "product_id", nullable = false)

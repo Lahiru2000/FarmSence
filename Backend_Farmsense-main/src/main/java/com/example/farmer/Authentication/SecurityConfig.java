@@ -12,6 +12,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.http.HttpMethod;
 
 import java.util.Arrays;
 
@@ -53,6 +54,11 @@ public class SecurityConfig {
                         .requestMatchers("/api/feedback/**").permitAll()
                         .requestMatchers("/api/orders/addOrder").permitAll()
                         .requestMatchers("/api/orders/**").permitAll() // Allow ALL order endpoints
+
+                        .requestMatchers("/uploads/feedback-images/**").permitAll()
+                        .requestMatchers("/feedback-images/**").permitAll()  // Updated this line
+                        .requestMatchers("/uploads/**").permitAll()         // Added this line
+                        .requestMatchers(HttpMethod.GET, "/feedback-images/**").permitAll()  // Added this line
 
                         // Admin only endpoints
                         .requestMatchers("/admin/**").hasAuthority("ADMIN")
