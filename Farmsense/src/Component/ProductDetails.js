@@ -298,35 +298,55 @@ const ProductDetails = () => {
 
       {/* Product Details Section */}
       <div className="bg-white rounded-lg shadow-md p-6 mb-6">
-        <h1 className="text-3xl font-bold mb-4">{product.name}</h1>
-        <div className="flex items-center mb-4">
-          <div className="mr-2">{renderStars(Math.round(averageRating))}</div>
-          <span className="text-lg font-semibold">({averageRating.toFixed(1)})</span>
-        </div>
-        
-        <div className="grid md:grid-cols-2 gap-4 mb-6">
-          <div>
-            <p className="mb-2"><span className="font-semibold">Description:</span> {product.description}</p>
-            <p className="mb-2"><span className="font-semibold">Type:</span> {product.type}</p>
-            <p className="mb-2"><span className="font-semibold">Price:</span> ${product.price}</p>
-            <p className="mb-2"><span className="font-semibold">Stock Quantity:</span> {product.stockQuantity}</p>
+        <div className="md:flex">
+          {/* Product Image */}
+          <div className="md:w-1/3 mb-4 md:mb-0 md:mr-6">
+            {product.imageUrl ? (
+              <img 
+                src="https://i.ibb.co/7qQycxz/afba35af609b45a990864bb8fa0d3577.jpg"
+                alt={product.name} 
+                className="w-full h-auto rounded-lg shadow-md object-cover"
+              />
+            ) : (
+              <div className="w-full h-64 bg-gray-200 rounded-lg flex items-center justify-center">
+                <span className="text-gray-500">No image available</span>
+              </div>
+            )}
           </div>
-          <div>
-            <p className="mb-2"><span className="font-semibold">Manufacturing Date:</span> {formatDate(product.manufacturingDate)}</p>
-            <p className="mb-2"><span className="font-semibold">Expiry Date:</span> {formatDate(product.expiryDate)}</p>
-            <p className="mb-2"><span className="font-semibold">Manufacturer:</span> {product.manufacturer}</p>
-            <p className="mb-2"><span className="font-semibold">Application Method:</span> {product.applicationMethod}</p>
+          
+          {/* Product Info */}
+          <div className="md:w-2/3">
+            <h1 className="text-3xl font-bold mb-4">{product.name}</h1>
+            <div className="flex items-center mb-4">
+              <div className="mr-2">{renderStars(Math.round(averageRating))}</div>
+              <span className="text-lg font-semibold">({averageRating.toFixed(1)})</span>
+            </div>
+            
+            <div className="grid md:grid-cols-2 gap-4 mb-6">
+              <div>
+                <p className="mb-2"><span className="font-semibold">Description:</span> {product.description}</p>
+                <p className="mb-2"><span className="font-semibold">Type:</span> {product.type}</p>
+                <p className="mb-2"><span className="font-semibold">Price:</span> ${product.price}</p>
+                <p className="mb-2"><span className="font-semibold">Stock Quantity:</span> {product.stockQuantity}</p>
+              </div>
+              <div>
+                <p className="mb-2"><span className="font-semibold">Manufacturing Date:</span> {formatDate(product.manufacturingDate)}</p>
+                <p className="mb-2"><span className="font-semibold">Expiry Date:</span> {formatDate(product.expiryDate)}</p>
+                <p className="mb-2"><span className="font-semibold">Manufacturer:</span> {product.manufacturer}</p>
+                <p className="mb-2"><span className="font-semibold">Application Method:</span> {product.applicationMethod}</p>
+              </div>
+            </div>
+            
+            <div className="bg-gray-50 p-4 rounded-md mb-6">
+              <h3 className="text-lg font-semibold mb-2">Safety Instructions</h3>
+              <p>{product.safetyInstructions}</p>
+            </div>
+            
+            <div className="flex gap-3">
+              <Link to={`/edit-product/${id}`} className="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded">Edit</Link>
+              <Link to="/" className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded">Back to List</Link>
+            </div>
           </div>
-        </div>
-        
-        <div className="bg-gray-50 p-4 rounded-md mb-6">
-          <h3 className="text-lg font-semibold mb-2">Safety Instructions</h3>
-          <p>{product.safetyInstructions}</p>
-        </div>
-        
-        <div className="flex gap-3">
-          <Link to={`/edit-product/${id}`} className="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded">Edit</Link>
-          <Link to="/" className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded">Back to List</Link>
         </div>
       </div>
 
@@ -434,6 +454,6 @@ const ProductDetails = () => {
       />
     </div>
   );
-};
+}; // Add closing brace for the ProductDetails component
 
 export default ProductDetails;
